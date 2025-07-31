@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home Energy Dashboard</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+    padding-top: 50px;
+  }
+
+  h1 {
+    color: #333;
+  }
+
+  p {
+    font-size: 1.5rem;
+    color: #222;
+    margin: 10px 0;
+  }
+
+  span {
+    font-weight: bold;
+    color: #0077cc;
+  }
+</style>
+</head>
+<body>
+  <h1>📊 Home Energy Monitor</h1>
+  <p>Current: <span id="current">--</span> A</p>
+  <p>Power: <span id="power">--</span> W</p>
+<p>Last Updated: <span id="timestamp">--</span></p>
+
+<h2>Live Power Chart</h2>
+<iframe width="450" height="260" style="border: 1px solid #ccc;" 
+src="https://thingspeak.com/channels/3021878/charts/2?bgcolor=%23ffffff&color=%23007acc&dynamic=true&type=line&results=60">
+</iframe>
+
+  <!-- ✅ Paste the script BELOW this line, but ABOVE </body> -->
+  <script>
+    const channelID = "3021878"; // Replace with your actual channel ID
+    const updateInterval = 15000; // 15 seconds (ThingSpeak rate limit)
+
+    function fetchData() {
+      fetch(`https://api.thingspeak.com/channels/${channelID}/feeds.json?results=1`)
+        .then(response => response.json())
+        .then(data => {
+          const latest = data.feeds[0];
+	const currentValue = parseFloat(latest.field1);
+	document.getElementById("current").textContent = currentValue;
+
+	// Change color based on value
+	const currentSpan = document.getElementById("current");
+	if (currentValue < 10) {
+	  currentSpan.style.color = "#0077cc"; // blue
+	} else if (currentValue < 13) {
+	  currentSpan.style.color = "orange";
+	} else {
+	  currentSpan.style.color = "red";
+	}
+
+
+	const powerValue = parseFloat(latest.field2);
+document.getElementById("power").textContent = powerValue;
+
+// Change color based on value
+const powerSpan = document.getElementById("power");
+if (powerValue < 1000) {
+  powerSpan.style.color = "green";
+} else if (powerValue < 1500) {
+  powerSpan.style.color = "orange";
+} else {
+  powerSpan.style.color = "red";
+}
+
+
+
+	  const ts = new Date(latest.created_at);
+   	  document.getElementById("timestamp").textContent = ts.toLocaleString();
+
+        })
+        .catch(error => {
+          console.error("Error fetching data:", error);
+        });
+    }
+
+    fetchData();
+    setInterval(fetchData, updateInterval);
+  </script>
+</body>
+</html>
