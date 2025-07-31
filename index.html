@@ -37,9 +37,8 @@
 src="https://thingspeak.com/channels/3021878/charts/2?bgcolor=%23ffffff&color=%23007acc&dynamic=true&type=line&results=60">
 </iframe>
 
-  <!-- ✅ Paste the script BELOW this line, but ABOVE </body> -->
   <script>
-    const channelID = "3021878"; // Replace with your actual channel ID
+    const channelID = "3021878"; 
     const updateInterval = 15000; // 15 seconds (ThingSpeak rate limit)
 
     function fetchData() {
@@ -64,7 +63,6 @@ src="https://thingspeak.com/channels/3021878/charts/2?bgcolor=%23ffffff&color=%2
 	const powerValue = parseFloat(latest.field2);
 document.getElementById("power").textContent = powerValue;
 
-// Change color based on value
 const powerSpan = document.getElementById("power");
 if (powerValue < 1000) {
   powerSpan.style.color = "green";
