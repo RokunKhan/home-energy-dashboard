@@ -1,11 +1,11 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-// Replace with your Wi-Fi network credentials
+// Wi-Fi network credentials
 const char* ssid = "Fios-SDzM8";
 const char* password = "Rokunkhan21";
 
-// Replace with your ThingSpeak Write API Key
+// ThingSpeak Write API Key
 String apiKey = "583FG9T68JWR8A5G";
 const char* server = "http://api.thingspeak.com/update";
 
